@@ -16,6 +16,8 @@ import com.rnpokedex.R;
 
 // react-native-camera
 import org.reactnative.camera.RNCameraPackage;
+// react-native-fs
+import com.rnfs.RNFSPackage;
 
 public class PackageList {
   private Application application;
@@ -61,7 +63,8 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
-      new RNCameraPackage()
+      new RNCameraPackage(),
+      new RNFSPackage()
     ));
   }
 }

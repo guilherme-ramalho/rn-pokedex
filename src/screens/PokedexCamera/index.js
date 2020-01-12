@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import RNFS from 'react-native-fs';
 
 import {
   Container,
@@ -11,31 +13,41 @@ import {
   ScanButton,
   ButtonText,
   ControlsView,
-  CenteredView,
-  SpacedView,
-  CrackLine,
   CrossAxisContainer,
   CrossAxisUpDown,
   CrossAxisLeftRight,
-  ActionButton,
 } from './styles';
 
 export default function PokedexCamera() {
   let pokeCam = null;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const picPreviewFeedback = () => {
+    pokeCam.pausePreview();
+    setTimeout(() => pokeCam.resumePreview(), 1500);
+  };
+
+  const getBase64 = async picture => {
+    const imagePath = picture.uri.substring(7);
+    const base64 = await RNFS.readFile(imagePath, 'base64');
+    console.log(base64);
+  };
 
   const takePicture = async () => {
     try {
-      alert('teste');
-      console.log('Taking picture...');
+      console.log('Taking picture');
 
-      const picBase64 = await pokeCam.takePictureAsync({
+      const picture = await pokeCam.takePictureAsync({
         quality: 0.5,
         base64: true,
       });
 
-      console.log(picBase64);
+      picPreviewFeedback();
+
+      getBase64(picture);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -52,53 +64,22 @@ export default function PokedexCamera() {
         <LedIndicator size={20} borderSize="2" color="#5BA96F" />
       </Row>
       <CameraContainer>
-        {/* <Row>
-          <CenteredView>
-            <LedIndicator
-              size={15}
-              borderSize="2"
-              color="red"
-              borderColor="#000"
-            />
-            <LedIndicator
-              size={15}
-              borderSize="2"
-              color="red"
-              borderColor="#000"
-            />
-          </CenteredView>
-        </Row> */}
-        <PokeCamera
-          ref={camera => {
-            pokeCam = camera;
-          }}
-          type={RNCamera.Constants.Type.back}
-          autoFocus={RNCamera.Constants.AutoFocus.on}
-          flashMode={RNCamera.Constants.FlashMode.off}
-          captureAudio
-        />
-        {/* <Row>
-          <SpacedView>
-            <LedIndicator
-              size={25}
-              borderSize="2"
-              color="red"
-              borderColor="#000"
-            />
-            <Col style={{ justifyContent: 'center' }}>
-              <CrackLine />
-              <CrackLine />
-              <CrackLine />
-            </Col>
-          </SpacedView>
-        </Row> */}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#ee5550" />
+        ) : (
+          <PokeCamera
+            ref={camera => {
+              pokeCam = camera;
+            }}
+            type={RNCamera.Constants.Type.back}
+            autoFocus={RNCamera.Constants.AutoFocus.on}
+            flashMode={RNCamera.Constants.FlashMode.off}
+            captureAudio
+          />
+        )}
       </CameraContainer>
       <ControlsView>
         <Col>
-          {/* <Row style={{ backgroundColor: 'red' }}>
-            <ActionButton color="#76D81D" />
-            <ActionButton color="#A95D53" />
-          </Row> */}
           <ScanButton>
             <ButtonText onPress={() => takePicture()}>SCAN POKÉMON</ButtonText>
           </ScanButton>
