@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import RNFS from 'react-native-fs';
+import axios from 'axios';
 
 import {
   Container,
@@ -27,16 +27,20 @@ export default function PokedexCamera() {
     setTimeout(() => pokeCam.resumePreview(), 1500);
   };
 
-  const getBase64 = async picture => {
-    const imagePath = picture.uri.substring(7);
-    const base64 = await RNFS.readFile(imagePath, 'base64');
-    console.log(base64);
+  const getPokemonData = async base64 => {
+    const { data: response } = await axios({
+      method: 'get',
+      url: `http://localhost:3333/pokemon`,
+      params: {
+        base64,
+      },
+    });
+
+    console.log(response);
   };
 
   const takePicture = async () => {
     try {
-      console.log('Taking picture');
-
       const picture = await pokeCam.takePictureAsync({
         quality: 0.5,
         base64: true,
@@ -44,15 +48,11 @@ export default function PokedexCamera() {
 
       picPreviewFeedback();
 
-      getBase64(picture);
+      getPokemonData(picture.base64);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
-  };
-
-  const getPokemonData = base64 => {
-    console.log(base64);
   };
 
   return (
