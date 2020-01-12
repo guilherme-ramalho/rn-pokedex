@@ -1,0 +1,4 @@
+#Sat Jan 11 21:06:51 BRT 2020
+base.0=/home/guilherme/Workspace/sideprojects/rn-pokedex/android/app/build/intermediates/transforms/dexMerger/debug/0
+renamed.0=classes.dex
+path.0=classes.dex
