@@ -28,13 +28,18 @@ export default function PokedexCamera() {
   };
 
   const getPokemonData = async base64 => {
+    setIsLoading(true);
+
     const { data: response } = await axios({
-      method: 'get',
-      url: `http://localhost:3333/pokemon`,
-      params: {
-        base64,
+      method: 'post',
+      baseURL: 'http://192.168.1.108:5000',
+      url: '/pokedex/classification',
+      data: {
+        base64string: base64,
       },
-    });
+    }).catch(error => console.log(error));
+
+    setIsLoading(false);
 
     console.log(response);
   };
@@ -44,14 +49,15 @@ export default function PokedexCamera() {
       const picture = await pokeCam.takePictureAsync({
         quality: 0.5,
         base64: true,
+        orientation: 'portrait',
+        fixOrientation: true,
       });
 
-      picPreviewFeedback();
+      // picPreviewFeedback();
 
       getPokemonData(picture.base64);
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
     }
   };
 
@@ -80,8 +86,12 @@ export default function PokedexCamera() {
       </CameraContainer>
       <ControlsView>
         <Col>
-          <ScanButton>
-            <ButtonText onPress={() => takePicture()}>SCAN POKÉMON</ButtonText>
+          <ScanButton onPress={() => takePicture()}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <ButtonText>SCAN POKÉMON</ButtonText>
+            )}
           </ScanButton>
         </Col>
         <CrossAxisContainer>
