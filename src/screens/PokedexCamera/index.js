@@ -39,7 +39,7 @@ export default function PokedexCamera({ navigation }) {
         data: {
           base64string: base64,
         },
-      }).catch(error => console.log(error));
+      });
 
       setIsLoading(false);
 

@@ -1,9 +1,20 @@
 import React from 'react';
-import { Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { Bar } from 'react-native-progress';
+import { ScrollView, View } from 'react-native';
 
-import { Container, StatsContainer, StatsBar, StatsText } from './styles';
+import {
+  Container,
+  StatsContainer,
+  StatsBar,
+  StatsText,
+  PokemonImage,
+  ImageContainer,
+  TitleText,
+  SectionText,
+  BadgeRow,
+  TypeBadge,
+  TypeText,
+} from './styles';
 
 export default function PokemonInfo({ navigation }) {
   const pokemonData = navigation.getParam('pokemonData');
@@ -19,27 +30,45 @@ export default function PokemonInfo({ navigation }) {
 
   return (
     <Container>
-      <StatsContainer>
-        {pokemonData.stats.map(item => (
-          <>
-            <StatsText>
-              {`${formatDashedString(item.stat.name)} (${item.base_stat}%)`}
-            </StatsText>
-            <StatsBar
-              progress={item.base_stat / 100}
-              boderWidth={1}
-              height={15}
-              width={null}
-              unfilledColor="#ededed"
-            />
-            {/* <StatsBar
-              styleAttr="Horizontal"
-              indeterminate={false}
-              progress={item.base_stat / 100}
-            /> */}
-          </>
-        ))}
-      </StatsContainer>
+      <ScrollView>
+        <TitleText>{pokemonData.name.toUpperCase()}</TitleText>
+        <ImageContainer>
+          <PokemonImage
+            source={{
+              uri: `https://pokeres.bastionbot.org/images/pokemon/${
+                pokemonData.id
+              }.png`,
+            }}
+          />
+        </ImageContainer>
+        <SectionText>Type</SectionText>
+        <BadgeRow>
+          {pokemonData.types.map(item => (
+            <TypeBadge>
+              <TypeText>{item.type.name.toUpperCase()}</TypeText>
+            </TypeBadge>
+          ))}
+        </BadgeRow>
+        <SectionText>Stats</SectionText>
+        <StatsContainer>
+          {pokemonData.stats.map(item => {
+            const formattedStat = formatDashedString(item.stat.name);
+
+            return (
+              <View key={formattedStat}>
+                <StatsText>{`${formattedStat} (${item.base_stat}%)`}</StatsText>
+                <StatsBar
+                  progress={item.base_stat / 100}
+                  boderWidth={1}
+                  height={15}
+                  width={null}
+                  unfilledColor="#ededed"
+                />
+              </View>
+            );
+          })}
+        </StatsContainer>
+      </ScrollView>
     </Container>
   );
 }
