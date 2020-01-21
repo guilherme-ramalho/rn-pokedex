@@ -41,7 +41,9 @@ export default function PokemonInfo({ navigation }) {
   return (
     <Container>
       <TitleRow>
-        <TitleText>{upperCaseFirstChar(pokemonData.name)}</TitleText>
+        <TitleText>{`#${pokemonData.id} - ${upperCaseFirstChar(
+          pokemonData.name
+        )}`}</TitleText>
       </TitleRow>
       <ImageContainer>
         <PokemonImage
