@@ -4,7 +4,26 @@
             "outputFile": "/home/guilherme/Workspace/sideprojects/rn-pokedex/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "/home/guilherme/.gradle/caches/transforms-2/files-2.1/00f1fd3c9e8a8a9209b0dc7ea20205c3/res/values-land/values-land.xml",
+                    "source": "/home/guilherme/.gradle/caches/transforms-2/files-2.1/4a087d9338a144db6d9192d11c2a494e/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "10",
+                        "endOffsets": "222"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "264",
+                        "endLines": "8",
+                        "endColumns": "10",
+                        "endOffsets": "431"
+                    }
+                },
+                {
+                    "source": "/home/guilherme/.gradle/caches/transforms-2/files-2.1/c5bc16003aa297c76749ad87454d131d/res/values-land/values-land.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

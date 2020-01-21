@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -18,7 +19,7 @@ import {
   CrossAxisLeftRight,
 } from './styles';
 
-export default function PokedexCamera() {
+export default function PokedexCamera({ navigation }) {
   let pokeCam = null;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,20 +29,24 @@ export default function PokedexCamera() {
   };
 
   const getPokemonData = async base64 => {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    const { data: response } = await axios({
-      method: 'post',
-      baseURL: 'http://192.168.1.108:5000',
-      url: '/pokedex/classification',
-      data: {
-        base64string: base64,
-      },
-    }).catch(error => console.log(error));
+      const { data: pokemonData } = await axios({
+        method: 'post',
+        baseURL: 'http://192.168.0.107:5000',
+        url: '/pokedex/classification',
+        data: {
+          base64string: base64,
+        },
+      }).catch(error => console.log(error));
 
-    setIsLoading(false);
+      setIsLoading(false);
 
-    console.log(response);
+      navigation.navigate('PokemonInfo', { pokemonData });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const takePicture = async () => {
@@ -102,3 +107,7 @@ export default function PokedexCamera() {
     </Container>
   );
 }
+
+PokedexCamera.propTypes = {
+  navigation: PropTypes.shape().isRequired,
+};

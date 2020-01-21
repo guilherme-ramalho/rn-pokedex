@@ -1,6 +1,7 @@
 import React from 'react';
-import PokedexCamera from './screens/PokedexCamera';
+import 'react-native-gesture-handler';
+import Routes from './routes';
 
 export default function App() {
-  return <PokedexCamera />;
+  return <Routes />;
 }
